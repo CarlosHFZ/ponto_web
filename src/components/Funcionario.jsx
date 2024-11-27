@@ -15,16 +15,6 @@ const Funcionario = () => {
       return;
     }
 
-    // Buscar os pontos do colaborador
-    axios.get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}/pontos`)
-      .then(response => {
-        setPontos(response.data.pontos);  // Assume que a resposta tem um array de pontos
-      })
-      .catch(error => {
-        console.error("Erro ao buscar pontos:", error);
-        alert("Erro ao carregar os pontos.");
-      });
-
     // Obter nome do colaborador se necessário
     axios.get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`)
       .then(response => {
@@ -61,10 +51,10 @@ const Funcionario = () => {
 
       <button onClick={handleRegistrarPonto}>Registrar Ponto</button>
 
-      <div>
-        <h2>Meus Horários de Ponto</h2>
-    
-      </div>
+      
+      <h2>Meus Horários de Ponto</h2>
+
+      
     </div>
   );
 };
