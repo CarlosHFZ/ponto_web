@@ -29,4 +29,5 @@ const Funcionario = () => {
   );
 };
 
+
 export default Funcionario;

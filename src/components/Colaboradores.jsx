@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Relogio from "./Relogio"; // Importando o componente do relógio
 
 const Colaboradores = () => {
   const [colaboradores, setColaboradores] = useState([]);
@@ -36,6 +37,10 @@ const Colaboradores = () => {
   return (
     <div>
       <h1>Colaboradores</h1>
+      
+      {/* Adicionando o relógio */}
+      <Relogio />
+
       <ul>
         {colaboradores.map(colab => (
           <li key={colab.id}>

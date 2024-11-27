@@ -76,6 +76,13 @@ button:disabled {
 }
 
 /* Lista de colaboradores */
+.Relogio{
+  margin: 20px 0;
+  font-size: 18px;
+  color: #007bff;
+  font-weight: bold;
+}
+
 ul {
   list-style: none;
   padding: 0;
