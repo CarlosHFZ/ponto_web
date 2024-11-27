@@ -5,6 +5,7 @@ import Relogio from "./Relogio"; // Importando o componente Relogio
 const Funcionario = () => {
   const [pontos, setPontos] = useState([]);
   const [nome, setNome] = useState("");
+  const [colaboradorNome, setColaboradorNome] = useState("");
 
   const colaboradorId = localStorage.getItem("colaboradorId");
 
@@ -42,19 +43,50 @@ const Funcionario = () => {
     }
   };
 
+  useEffect(() => {
+    // Função para buscar o colaborador
+    const mostrarColaborador = async () => {
+      const colaboradorId = localStorage.getItem("colaboradorId");
+
+      if (!colaboradorId) {
+        alert("Colaborador não encontrado. Faça login novamente.");
+        return;
+      }
+
+      try {
+        // Fazer requisição à API para buscar o colaborador
+        const response = await axios.get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`);
+
+
+        // Definir o nome do colaborador no state
+        setColaboradorNome(response.data.nome); // Atualiza o state com o nome
+      } catch (error) {
+        console.error("Erro ao buscar colaborador:", error);
+
+        if (error.response) {
+          alert(`Erro: ${error.response.data.erro}`);
+        } else {
+          alert("Erro ao conectar com o servidor.");
+        }
+      }
+    };
+
+    // Chamar a função de buscar colaborador ao montar o componente
+    mostrarColaborador();
+  }, []); // Executa apenas quando o componente é montado
+
+  
+  
+
   return (
     <div>
-      <h1>Bem-vindo, {nome || "Funcionário"}</h1>
+      <h1>Bem-vindo, {colaboradorNome || "Carregando..."}</h1>
       
       {/* Relógio com a hora atual */}
       <Relogio />
 
       <button onClick={handleRegistrarPonto}>Registrar Ponto</button>
 
-      
-      <h2>Meus Horários de Ponto</h2>
-
-      
     </div>
   );
 };
