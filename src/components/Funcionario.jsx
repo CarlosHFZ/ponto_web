@@ -61,6 +61,10 @@ const Funcionario = () => {
 
       <button onClick={handleRegistrarPonto}>Registrar Ponto</button>
 
+      <div>
+        <h2>Meus Horários de Ponto</h2>
+    
+      </div>
     </div>
   );
 };
