@@ -1,3 +1,14 @@
+/* Variáveis de cores */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ff5722;
+  --background-color: #f4f4f9;
+  --text-color: #333;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 /* Reset de margin e padding para todos os elementos */
 *,
 *::before,
@@ -10,15 +21,14 @@
 /* Corpo da página */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
+  background-color: var(--background-color);
+  color: var(--text-color);
   line-height: 1.5;
   display: flex;
   justify-content: center;
-  align-items: center;  /* Centraliza o conteúdo vertical e horizontalmente */
+  align-items: center;
   min-height: 100vh;
   padding: 0;
-  margin: 0;
   overflow-x: hidden;
 }
 
@@ -27,7 +37,7 @@ div {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   width: 100%;
   max-width: 800px;
   text-align: center;
@@ -37,19 +47,20 @@ div {
 /* Títulos */
 h1 {
   font-size: 2rem;
-  color: #007bff;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 
 h2 {
   font-size: 1.25rem;
   color: #555;
-  margin-bottom: 20px;
+  margin: 10px 10px 20px;
+  padding: 5px;
 }
 
-/* Estilo da mensagem de alerta para limite de registros */
+/* Estilo de alerta */
 .alerta-limite {
-  color: #ff5722;
+  color: var(--warning-color);
   font-size: 1rem;
   background-color: #ffe0b2;
   padding: 10px;
@@ -58,7 +69,7 @@ h2 {
   margin-top: 20px;
 }
 
-/* Formatação para os colaboradores */
+/* Lista de colaboradores */
 ul {
   list-style: none;
   padding: 0;
@@ -71,20 +82,20 @@ li {
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   font-size: 1rem;
 }
 
 li span {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #007bff;
+  color: var(--primary-color);
   margin-bottom: 10px;
 }
 
-/* Estilo para os botões */
+/* Botões */
 button {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 10px;
@@ -99,52 +110,10 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* Estilo para os registros */
-.registros {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  padding: 10px;
-}
-
-/* Hora do registro */
-.hora-registro {
-  background-color: #28a745;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: background-color 0.3s;
-  margin: 5px;
-}
-
-.hora-registro:hover {
-  background-color: #0056b3;
-}
-
-/* Estilos para o formulário de login */
-input[type="text"], input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-input[type="text"]:focus, input[type="password"]:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* Estilo do botão de login */
 button[type="button"] {
   width: 100%;
   margin-top: 15px;
-  background-color: #28a745;
+  background-color: var(--secondary-color);
   font-size: 1.1rem;
 }
 
@@ -152,88 +121,26 @@ button[type="button"]:hover {
   background-color: #218838;
 }
 
-/* Relógio */
-.relogio {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #dc3545;
-  margin-top: 15px;
-}
-
-/* Formatação do relógio */
-.relogio {
-  text-align: center;
-  margin-top: 15px;
-}
-
-/* Input para adicionar novo colaborador */
-input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-input[type="text"]:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* Formatação dos botões para adicionar/remover colaboradores */
-button[type="button"], button[type="submit"] {
-  width: 100%;
-  margin-top: 15px;
-  background-color: #28a745;
-  font-size: 1.1rem;
-}
-
-button[type="button"]:hover, button[type="submit"]:hover {
-  background-color: #218838;
-}
-
-/* Estilo para o botão de remover colaborador */
 .botao-remover {
-  background-color: #dc3545; /* Cor vermelha */
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 10px;
+  background-color: var(--danger-color);
 }
 
 .botao-remover:hover {
-  background-color: #c82333; /* Tom de vermelho mais escuro */
+  background-color: #c82333;
 }
 
-h2 {
-  padding: 5px;
-  margin-top: 10px;
-  margin-inline: 10px;
-}
-
-.registros {
-  padding: 1px;
-}
-
-/* Estilo para os pontos registrados dos funcionários */
+/* Registros */
 .registros {
   display: flex;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 10px;
-  padding: 10px;
+  padding: 10px 1px;
 }
 
-/* Hora do registro */
 .hora-registro {
-  background-color: #28a745;
+  background-color: var(--secondary-color);
   color: white;
   padding: 8px 12px;
   border-radius: 5px;
@@ -246,18 +153,17 @@ h2 {
   background-color: #0056b3;
 }
 
-/* Estilo para os registros no funcionário */
+/* Pilha de registros */
 .registros-pilha {
   display: flex;
-  flex-direction: column-reverse; /* Pilha invertida para que os registros mais novos fiquem em cima */
+  flex-direction: column-reverse;
   justify-content: flex-start;
   gap: 12px;
-  flex-wrap: wrap;
   margin-top: 10px;
 }
 
 .registro-pilha {
-  background-color: #007bff; /* Cor para os registros mais recentes */
+  background-color: var(--primary-color);
   color: white;
   padding: 8px 12px;
   border-radius: 5px;
@@ -269,4 +175,115 @@ h2 {
 .registro-pilha:hover {
   background-color: #0056b3;
 }
-/*teste*/
+
+/* Formulários */
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Relógio */
+.relogio {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--danger-color);
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  div {
+    padding: 15px;
+    width: 90%;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+
+  .relogio {
+    font-size: 1.2rem;
+  }
+}
+/* Estilos de notificações */
+.notification {
+  position: fixed;
+  top: 20%; /* Ajustado para aparecer um pouco acima do centro */
+  left: 50%;
+  transform: translateX(-50%); /* Centraliza horizontalmente */
+  width: 300px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  text-align: center; /* Centraliza o texto dentro da notificação */
+}
+
+.notification.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Notificação de sucesso (colaborador adicionado) */
+.notification.success {
+  background-color: #28a745; /* Verde para sucesso */
+  color: white;
+  border: 1px solid #218838;
+}
+
+/* Notificação de erro (colaborador removido) */
+.notification.error {
+  background-color: #dc3545; /* Vermelho para erro */
+  color: white;
+  border: 1px solid #c82333;
+}
+
+/* Notificação de informação */
+.notification.info {
+  background-color: #17a2b8; /* Azul para informações */
+  color: white;
+  border: 1px solid #117a8b;
+}
+
+/* Botão "OK" para fechar a notificação */
+.notification-close-btn {
+  background-color: #007bff; /* Azul para o botão */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Espaçamento acima do botão */
+  display: block; /* Faz o botão ocupar toda a largura disponível */
+  width: 100%; /* Faz o botão ter a mesma largura da notificação */
+}
+
+.notification-close-btn:hover {
+  background-color: #0056b3; /* Azul escuro no hover */
+  text-decoration: underline; /* Sublinha o botão quando o cursor passa */
+}
