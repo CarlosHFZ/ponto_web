@@ -7,6 +7,7 @@ const Colaboradores = () => {
   const [nome, setNome] = useState("");
   const [registrosPorColaborador, setRegistrosPorColaborador] = useState({});
   const [visibilidadeRegistros, setVisibilidadeRegistros] = useState({});
+  const [mensagemLimite, setMensagemLimite] = useState("");
 
   // Buscar Colaboradores
   useEffect(() => {
@@ -41,10 +42,20 @@ const Colaboradores = () => {
     if (!registrosPorColaborador[colaboradorId]) {
       try {
         const response = await axios.get(`http://127.0.0.1:5000/registros/${colaboradorId}`);
-        setRegistrosPorColaborador((prev) => ({
-          ...prev,
-          [colaboradorId]: response.data,
-        }));
+        // Exibir somente os 4 primeiros registros
+        const registrosLimitados = response.data.slice(0, 4);
+
+        if (registrosLimitados.length < 4) {
+          setRegistrosPorColaborador((prev) => ({
+            ...prev,
+            [colaboradorId]: registrosLimitados,
+          }));
+        } else {
+          setRegistrosPorColaborador((prev) => ({
+            ...prev,
+            [colaboradorId]: registrosLimitados,
+          }));
+        }
       } catch (err) {
         console.error(`Erro ao buscar registros para colaborador ${colaboradorId}:`, err);
       }
@@ -60,12 +71,40 @@ const Colaboradores = () => {
     buscarRegistrosPorColaborador(colaboradorId);
   };
 
+  // Adicionar um novo registro
+  const adicionarRegistro = async (colaboradorId, hora) => {
+    try {
+      // Verificar se já existem 4 registros
+      if (registrosPorColaborador[colaboradorId] && registrosPorColaborador[colaboradorId].length >= 4) {
+        setMensagemLimite("Limite de 4 horários atingido.");
+        return;
+      }
+      
+      // Adicionar o novo registro
+      const response = await axios.post("http://127.0.0.1:5000/registros", {
+        colaboradorId,
+        hora,
+      });
+
+      // Atualiza a lista de registros
+      setRegistrosPorColaborador((prev) => ({
+        ...prev,
+        [colaboradorId]: [...(prev[colaboradorId] || []), response.data],
+      }));
+    } catch (err) {
+      console.error(`Erro ao adicionar registro para colaborador ${colaboradorId}:`, err);
+    }
+  };
+
   return (
     <div>
       <h1>Colaboradores</h1>
 
       {/* Adicionando o relógio */}
       <Relogio className="Relogio" />
+
+      {/* Mensagem de alerta para o limite de 4 registros */}
+      {mensagemLimite && <div className="alerta-limite">{mensagemLimite}</div>}
 
       <ul>
         {colaboradores.map((colab) => (
@@ -79,14 +118,17 @@ const Colaboradores = () => {
 
             {/* Exibir os registros se existirem */}
             {visibilidadeRegistros[colab.id] && registrosPorColaborador[colab.id] && (
-              <ul>
+              <div className="registros">
                 {registrosPorColaborador[colab.id].map((registro) => (
-                  <li key={registro.id_registro}>{registro.hora}</li>
+                  <span key={registro.id_registro} className="hora-registro">
+                    {registro.hora}
+                  </span>
                 ))}
-              </ul>
+              </div>
             )}
 
-            <button onClick={() => removerColaborador(colab.id)}>Remover</button>
+            {/* Botão de remover com classe para estilo */}
+            <button onClick={() => removerColaborador(colab.id)} className="botao-remover">Remover</button>
           </li>
         ))}
       </ul>

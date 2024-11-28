@@ -1,21 +1,25 @@
-/* Estilo global */
+/* Reset de margin e padding para todos os elementos */
 *,
 *::before,
 *::after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+/* Corpo da página */
 body {
   font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
   background-color: #f4f4f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 150vh;
   color: #333;
   line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;  /* Centraliza o conteúdo vertical e horizontalmente */
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 /* Container principal */
@@ -24,101 +28,183 @@ div {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 90%;
+  width: 100%;
+  max-width: 800px;
   text-align: center;
-  margin: 0 auto;
+  overflow: hidden;
 }
 
 /* Títulos */
-h1, h2 {
-  margin: 0;
-  padding: 10px 0;
-  color: #007bff;
-  text-align: center; /* Centraliza o texto */
-}
-
 h1 {
   font-size: 2rem;
+  color: #007bff;
+  margin-bottom: 20px;
 }
 
 h2 {
   font-size: 1.25rem;
   color: #555;
+  margin-bottom: 20px;
 }
 
-/* Inputs */
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+/* Estilo da mensagem de alerta para limite de registros */
+.alerta-limite {
+  color: #ff5722;
   font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #ffe0b2;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
 }
 
-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: 2px solid #007bff;
+/* Formatação para os colaboradores */
+ul {
+  list-style: none;
+  padding: 0;
 }
 
-/* Botões */
+li {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+}
+
+li span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+/* Estilo para os botões */
 button {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  width: 100%;
-  margin-top: 15px;
   transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+/* Estilo para os registros */
+.registros {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-/* Lista de colaboradores */
-li {
-  background: #fff;
-  text-align: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-li:hover {
-  background-color: #f1f1f1;
-}
-
-li button {
-  background-color: #007bff;
-  padding: 10px;
-  border-radius: 5px;
+.hora-registro {
+  background-color:  #28a745;
   color: white;
-  border: none;
-  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
   transition: background-color 0.3s;
 }
 
-li button:hover {
-  background-color: #a71d2a;
+.hora-registro:hover {
+  background-color: #0056b3;
 }
 
-/* Mensagem de erro */
-p {
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
-  text-align: center;
+/* Estilos para o formulário de login */
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s;
 }
+
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Estilo do botão de login */
+button[type="button"] {
+  width: 100%;
+  margin-top: 15px;
+  background-color: #28a745;
+  font-size: 1.1rem;
+}
+
+button[type="button"]:hover {
+  background-color: #218838;
+}
+
+/* Relógio */
+.relogio {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #dc3545;
+  margin-top: 15px;
+}
+
+/* Formatação do relógio */
+.relogio {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Input para adicionar novo colaborador */
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Formatação dos botões para adicionar/remover colaboradores */
+button[type="button"], button[type="submit"] {
+  width: 100%;
+  margin-top: 15px;
+  background-color: #28a745;
+  font-size: 1.1rem;
+}
+
+button[type="button"]:hover, button[type="submit"]:hover {
+  background-color: #218838;
+}
+/* Estilo para o botão de remover colaborador */
+.botao-remover {
+  background-color: #dc3545; /* Cor vermelha */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.botao-remover:hover {
+  background-color: #c82333; /* Tom de vermelho mais escuro */
+}
+
+
