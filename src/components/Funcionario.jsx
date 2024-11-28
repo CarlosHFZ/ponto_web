@@ -29,20 +29,24 @@ const Funcionario = () => {
       alert("Colaborador não encontrado. Faça login novamente.");
       return;
     }
-
+  
     try {
       const response = await axios.post("http://127.0.0.1:5000/registrar_ponto", {
         colaborador_id: colaboradorId, // Enviar colaborador_id
       });
-      alert(response.data.message);
-      // Atualiza a lista de pontos com o novo ponto registrado
-      setPontos([...pontos, response.data.horario]); // Supondo que a resposta contenha o horário
+  
+      // Atualizar lista de pontos (se o backend retornar o horário registrado)
+      if (response.data.horario) {
+        setPontos([...pontos, response.data.horario]); // Supondo que o horário esteja na resposta
+      }
+  
+      alert(response.data.message || "Ponto registrado com sucesso!");
     } catch (error) {
-      console.error("Erro ao registrar ponto:", error);
-      alert("Erro ao registrar ponto.");
+      console.error("Erro ao registrar ponto:", error.response?.data || error.message);
+      alert(error.response?.data.error || "Erro ao registrar ponto.");
     }
   };
-
+  
   useEffect(() => {
     // Função para buscar o colaborador
     const mostrarColaborador = async () => {
