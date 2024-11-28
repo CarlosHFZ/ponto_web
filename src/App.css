@@ -25,14 +25,36 @@ body {
 /* Container principal */
 div {
   background: #fff;
-  padding: 20px;
+  padding: 5px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
   text-align: center;
   overflow: hidden;
 }
+
+.controle-colaborador {
+  display: flex; /* Alinha os itens em linha */
+  gap: 10px; /* Espaço entre o input e o botão */
+  align-items: center; /* Garante alinhamento vertical */
+  margin-bottom: 20px; /* Espaçamento inferior (opcional) */
+}
+
+.controle-colaborador input {
+  flex: auto; /* Faz o input ocupar o máximo de espaço disponível */
+  margin-bottom: 15px;
+}
+
+.controle-colaborador button {
+  padding: 15px 15px; /* Ajuste o padding do botão conforme necessário */
+}
+
+.div_topo Relogio {
+  size: 20px;
+}
+
+
 
 /* Títulos */
 h1 {
@@ -93,6 +115,18 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 10px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.botao-remover {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.botao-mostrar {
+  margin-left: 200px;
+  margin-right: 200px;
 }
 
 button:hover {
@@ -196,15 +230,16 @@ button[type="button"]:hover, button[type="submit"]:hover {
 
 /* Estilo para o botão de remover colaborador */
 .botao-remover {
-  background-color: #dc3545; /* Cor vermelha */
+  margin-left: auto; /* Faz o botão de remoção ficar alinhado à direita */
+  background-color: #dc3545;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 15px;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 13px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 10px;
+  margin-right: 30px;
 }
 
 .botao-remover:hover {
@@ -268,4 +303,48 @@ h2 {
 
 .registro-pilha:hover {
   background-color: #0056b3;
+}
+
+
+/* Estilo para cada linha do colaborador */
+.colaborador-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Estilo para registros */
+.registros {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start; /* Alinha os registros à esquerda */
+  flex-wrap: wrap; /* Permite quebrar linha se necessário */
+  margin-top: 10px;
+}
+
+.sem-registro {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* Hora do registro */
+.hora-registro {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.hora-registro:hover {
+  background-color: #0056b3;
+}
+
+.colaborador_nome{
+  margin-top: 20px;
+  margin-left: 10px;
+  font-size: 20px;
 }
