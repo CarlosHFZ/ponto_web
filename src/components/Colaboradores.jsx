@@ -36,44 +36,41 @@ const Colaboradores = () => {
       .catch(error => console.error("Erro ao remover colaborador:", error));
   };
 
-    // Buscar Registros por Colaborador
-    const buscarRegistrosPorColaborador = async (colaboradorId) => {
-      // Só busca os registros se ainda não houver registros carregados para o colaborador
-      if (!registrosPorColaborador[colaboradorId]) {
-        try {
-          const response = await axios.get(`http://127.0.0.1:5000/registros/${colaboradorId}`);
-          setRegistrosPorColaborador((prev) => ({
-            ...prev,
-            [colaboradorId]: response.data, // Adiciona os registros ao estado
-          }));
-        } catch (err) {
-          console.error(`Erro ao buscar registros para colaborador ${colaboradorId}:`, err);
-        }
+  // Buscar Registros por Colaborador
+  const buscarRegistrosPorColaborador = async (colaboradorId) => {
+    if (!registrosPorColaborador[colaboradorId]) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/registros/${colaboradorId}`);
+        setRegistrosPorColaborador((prev) => ({
+          ...prev,
+          [colaboradorId]: response.data,
+        }));
+      } catch (err) {
+        console.error(`Erro ao buscar registros para colaborador ${colaboradorId}:`, err);
       }
-    };
+    }
+  };
 
   // Alternar visibilidade dos registros
   const alternarVisibilidadeRegistros = (colaboradorId) => {
     setVisibilidadeRegistros((prev) => ({
       ...prev,
-      [colaboradorId]: !prev[colaboradorId], // Alterna o estado de visibilidade
+      [colaboradorId]: !prev[colaboradorId],
     }));
-    // Chama a função de buscar registros se for a primeira vez
     buscarRegistrosPorColaborador(colaboradorId);
   };
-
 
   return (
     <div>
       <h1>Colaboradores</h1>
 
       {/* Adicionando o relógio */}
-      <Relogio />
+      <Relogio className="Relogio" />
 
       <ul>
         {colaboradores.map((colab) => (
           <li key={colab.id}>
-            {colab.nome}
+            <span>{colab.nome}</span>
 
             {/* Botão para buscar e mostrar registros do colaborador */}
             <button onClick={() => alternarVisibilidadeRegistros(colab.id)}>

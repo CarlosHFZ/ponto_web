@@ -1,56 +1,67 @@
 /* Estilo global */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f4f9;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 150vh;
   color: #333;
+  line-height: 1.5;
 }
 
 /* Container principal */
 div {
-  background: #ffffff;
+  background: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 90%;
   text-align: center;
+  margin: 0 auto;
 }
 
 /* Títulos */
-h1 {
-  margin-bottom: 20px;
-  font-size: 24px;
+h1, h2 {
+  margin: 0;
+  padding: 10px 0;
   color: #007bff;
+  text-align: center; /* Centraliza o texto */
+}
+
+h1 {
+  font-size: 2rem;
 }
 
 h2 {
-  margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #555;
 }
 
 /* Inputs */
 input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: none;
+  outline: 2px solid #007bff;
 }
 
 /* Botões */
@@ -58,12 +69,13 @@ button {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 12px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.3s;
 }
 
 button:hover {
@@ -76,32 +88,27 @@ button:disabled {
 }
 
 /* Lista de colaboradores */
-.Relogio{
-  margin: 20px 0;
-  font-size: 18px;
-  color: #007bff;
-  font-weight: bold;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-  text-align: left;
-}
-
 li {
-  margin: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f9f9f9;
+  background: #fff;
+  text-align: center;
   padding: 10px;
+  margin-bottom: 10px;
   border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+li:hover {
+  background-color: #f1f1f1;
 }
 
 li button {
-  background-color: #dc3545;
+  background-color: #007bff;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 li button:hover {
@@ -112,4 +119,6 @@ li button:hover {
 p {
   color: red;
   font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
 }
