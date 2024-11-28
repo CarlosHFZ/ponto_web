@@ -206,5 +206,13 @@ button[type="button"]:hover, button[type="submit"]:hover {
 .botao-remover:hover {
   background-color: #c82333; /* Tom de vermelho mais escuro */
 }
+h2{
+  padding: 5px;
+  margin-top: 10px;
+  margin-inline: 10px;
+}
+.registros{
+  padding: 1px;
+}
 
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Relogio from "./Relogio"; // Importando o componente Relogio
+import Relogio from "./Relogio"; // Importando o componente Relógio
 
 const Funcionario = () => {
   const [pontos, setPontos] = useState([]);
@@ -17,11 +17,12 @@ const Funcionario = () => {
     }
 
     // Obter nome do colaborador se necessário
-    axios.get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`)
-      .then(response => {
-        setNome(response.data.nome);  // Supondo que a API retorne o nome
+    axios
+      .get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`)
+      .then((response) => {
+        setNome(response.data.nome); // Supondo que a API retorne o nome
       })
-      .catch(error => console.error("Erro ao obter dados do colaborador:", error));
+      .catch((error) => console.error("Erro ao obter dados do colaborador:", error));
   }, [colaboradorId]);
 
   const handleRegistrarPonto = async () => {
@@ -29,24 +30,24 @@ const Funcionario = () => {
       alert("Colaborador não encontrado. Faça login novamente.");
       return;
     }
-  
+
     try {
       const response = await axios.post("http://127.0.0.1:5000/registrar_ponto", {
         colaborador_id: colaboradorId, // Enviar colaborador_id
       });
-  
+
       // Atualizar lista de pontos (se o backend retornar o horário registrado)
       if (response.data.horario) {
         setPontos([...pontos, response.data.horario]); // Supondo que o horário esteja na resposta
       }
-  
+
       alert(response.data.message || "Ponto registrado com sucesso!");
     } catch (error) {
       console.error("Erro ao registrar ponto:", error.response?.data || error.message);
       alert(error.response?.data.error || "Erro ao registrar ponto.");
     }
   };
-  
+
   useEffect(() => {
     // Função para buscar o colaborador
     const mostrarColaborador = async () => {
@@ -60,8 +61,6 @@ const Funcionario = () => {
       try {
         // Fazer requisição à API para buscar o colaborador
         const response = await axios.get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`);
-
-
         // Definir o nome do colaborador no state
         setColaboradorNome(response.data.nome); // Atualiza o state com o nome
       } catch (error) {
@@ -79,9 +78,6 @@ const Funcionario = () => {
     mostrarColaborador();
   }, []); // Executa apenas quando o componente é montado
 
-  
-  
-
   return (
     <div>
       <h1>Bem-vindo, {colaboradorNome || "Carregando..."}</h1>
@@ -91,9 +87,21 @@ const Funcionario = () => {
 
       <button onClick={handleRegistrarPonto}>Registrar Ponto</button>
 
+      <h2>Registros de Ponto:</h2>
+      <div className="registros">
+        {pontos.length > 0 ? (
+          pontos.map((ponto, index) => (
+            <span key={index} className="hora-registro">
+              {ponto}
+            </span>
+          ))
+        ) : (
+          <p>Ainda não há registros de ponto.</p>
+        )}
+      </div>
     </div>
   );
 };
 
-
 export default Funcionario;
+
