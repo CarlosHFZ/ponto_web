@@ -106,15 +106,18 @@ button:hover {
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 10px;
+  padding: 10px;
 }
 
+/* Hora do registro */
 .hora-registro {
-  background-color:  #28a745;
+  background-color: #28a745;
   color: white;
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 1rem;
   transition: background-color 0.3s;
+  margin: 5px;
 }
 
 .hora-registro:hover {
@@ -190,6 +193,7 @@ button[type="button"], button[type="submit"] {
 button[type="button"]:hover, button[type="submit"]:hover {
   background-color: #218838;
 }
+
 /* Estilo para o botão de remover colaborador */
 .botao-remover {
   background-color: #dc3545; /* Cor vermelha */
@@ -206,13 +210,62 @@ button[type="button"]:hover, button[type="submit"]:hover {
 .botao-remover:hover {
   background-color: #c82333; /* Tom de vermelho mais escuro */
 }
-h2{
+
+h2 {
   padding: 5px;
   margin-top: 10px;
   margin-inline: 10px;
 }
-.registros{
+
+.registros {
   padding: 1px;
 }
 
+/* Estilo para os pontos registrados dos funcionários */
+.registros {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 10px;
+}
 
+/* Hora do registro */
+.hora-registro {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  margin: 5px;
+}
+
+.hora-registro:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para os registros no funcionário */
+.registros-pilha {
+  display: flex;
+  flex-direction: column-reverse; /* Pilha invertida para que os registros mais novos fiquem em cima */
+  justify-content: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.registro-pilha {
+  background-color: #007bff; /* Cor para os registros mais recentes */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  margin: 5px;
+}
+
+.registro-pilha:hover {
+  background-color: #0056b3;
+}

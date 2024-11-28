@@ -10,7 +10,6 @@ const Funcionario = () => {
   const colaboradorId = localStorage.getItem("colaboradorId");
 
   useEffect(() => {
-    // Verifica se o colaborador está logado
     if (!colaboradorId) {
       alert("Colaborador não encontrado. Faça login novamente.");
       return;
@@ -20,7 +19,7 @@ const Funcionario = () => {
     axios
       .get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`)
       .then((response) => {
-        setNome(response.data.nome); // Supondo que a API retorne o nome
+        setNome(response.data.nome);
       })
       .catch((error) => console.error("Erro ao obter dados do colaborador:", error));
   }, [colaboradorId]);
@@ -33,13 +32,17 @@ const Funcionario = () => {
 
     try {
       const response = await axios.post("http://127.0.0.1:5000/registrar_ponto", {
-        colaborador_id: colaboradorId, // Enviar colaborador_id
+        colaborador_id: colaboradorId,
       });
 
-      // Atualizar lista de pontos (se o backend retornar o horário registrado)
-      if (response.data.horario) {
-        setPontos([...pontos, response.data.horario]); // Supondo que o horário esteja na resposta
-      }
+      // Verifica se o colaborador já tem 4 registros e remove o mais antigo, se necessário
+      setPontos((prevPontos) => {
+        const novosPontos = [...prevPontos, response.data.horario];
+        if (novosPontos.length > 4) {
+          novosPontos.shift(); // Remove o primeiro ponto, mantendo apenas 4
+        }
+        return novosPontos;
+      });
 
       alert(response.data.message || "Ponto registrado com sucesso!");
     } catch (error) {
@@ -59,29 +62,21 @@ const Funcionario = () => {
       }
 
       try {
-        // Fazer requisição à API para buscar o colaborador
         const response = await axios.get(`http://127.0.0.1:5000/colaboradores/${colaboradorId}`);
-        // Definir o nome do colaborador no state
-        setColaboradorNome(response.data.nome); // Atualiza o state com o nome
+        setColaboradorNome(response.data.nome); // Atualiza o estado com o nome
       } catch (error) {
         console.error("Erro ao buscar colaborador:", error);
-
-        if (error.response) {
-          alert(`Erro: ${error.response.data.erro}`);
-        } else {
-          alert("Erro ao conectar com o servidor.");
-        }
+        alert("Erro ao conectar com o servidor.");
       }
     };
 
-    // Chamar a função de buscar colaborador ao montar o componente
     mostrarColaborador();
   }, []); // Executa apenas quando o componente é montado
 
   return (
     <div>
       <h1>Bem-vindo, {colaboradorNome || "Carregando..."}</h1>
-      
+
       {/* Relógio com a hora atual */}
       <Relogio />
 
@@ -104,4 +99,3 @@ const Funcionario = () => {
 };
 
 export default Funcionario;
-
