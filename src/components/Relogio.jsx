@@ -12,9 +12,9 @@ const Relogio = () => {
   }, []);
 
   return (
-    <div className="relogio">
+    <h2 style={{ fontSize: '28px'}}>
       {dataHora.toLocaleDateString()} - {dataHora.toLocaleTimeString()}
-    </div>
+    </h2>
   );
 };
 
