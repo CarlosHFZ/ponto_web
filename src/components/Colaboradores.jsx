@@ -87,7 +87,6 @@ const Colaboradores = () => {
         buscarRegistrosPorColaborador(colaborador.id, dataFiltro); // Passa a dataFiltro para a busca
       });
     } else {
-      alert("Por favor, selecione uma data para filtrar.");
     }
   };
 

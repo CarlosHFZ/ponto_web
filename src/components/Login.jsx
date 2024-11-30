@@ -37,25 +37,32 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Sistema de Ponto Online</h1>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Senha"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
-      />
-      <button onClick={handleLogin}>Entrar</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="login-page">
+      <div className="div_ponto login-container">
+        <h1>Sistema de Ponto Online</h1>
+        <h2>Login</h2>
+        <form className="login-form">
+          <input
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+          <button onClick={handleLogin} type="button">
+            Entrar
+          </button>
+          {error && <p className="login-error">{error}</p>}
+        </form>
+      </div>
     </div>
   );
+
 };
 
 export default Login;
