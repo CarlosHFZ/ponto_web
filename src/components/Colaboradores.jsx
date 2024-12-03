@@ -10,6 +10,7 @@ const Colaboradores = () => {
   const [dataFiltro, setDataFiltro] = useState(""); // Estado para o filtro de data
   const [mensagemLimite, setMensagemLimite] = useState("");
   const [filtroAplicado, setFiltroAplicado] = useState(false);  // Estado para verificar se o filtro foi aplicado
+  const [mensagem, setMensagem] = useState({exto:"", tipo: ""});
 
 
   useEffect(() => {
@@ -33,28 +34,35 @@ const Colaboradores = () => {
     axios
       .get("http://127.0.0.1:5000/colaboradores")
       .then((response) => setColaboradores(response.data))
-      .catch((error) => console.error("Erro ao buscar colaboradores:", error));
+      .catch(() =>
+        setMensagem ({texto: "Erro ao buscar colaboradores.", tipo: "error"})
+    ); 
   }, []);
 
   // Adicionar Colaborador
   const adicionarColaborador = () => {
     axios.post("http://127.0.0.1:5000/colaboradores", { nome })
-      .then(response => {
-        alert(response.data.message);
-        setColaboradores([...colaboradores, { id: Date.now(), nome }]);
-        setNome("");
+      .then((response) => {
+          setColaboradores([...colaboradores, { id: Date.now(), nome }]);
+          setMensagem({texto: response.data.message || "Colaborador adicionado com sucesso!", tipo: "success"});
+          setNome("");
       })
-      .catch(error => console.error("Erro ao adicionar colaborador:", error));
+      .catch(() =>
+        setMensagem ({texto: "Erro ao adicionar colaborador.", tipo: "error"})
+    );
   };
 
   // Remover Colaborador
   const removerColaborador = (id) => {
     axios.delete(`http://127.0.0.1:5000/colaboradores/${id}`)
       .then(response => {
-        alert(response.data.message);
+
         setColaboradores(colaboradores.filter(colab => colab.id !== id));
+        setMensagem({texto: response.data.message || "Colaborador removido com sucesso!", tipo: "success"})
       })
-      .catch(error => console.error("Erro ao remover colaborador:", error));
+      .catch(() => 
+        setMensagem({texto: "Erro ao remover colaborador.", tipo: "error"})
+    );
   };
 
   // Buscar registros para um colaborador específico (com data opcional)
@@ -90,12 +98,25 @@ const Colaboradores = () => {
     }
   };
 
+  // Função para remover a mensagem
+  const removerMensagem = () => {
+    setMensagem({ texto: "", tipo: "" });
+  };
+
   return (
     <div>
       <div className="div_topo">
         <h1>Painel Colaboradores</h1>
         <Relogio className="Relogio" />
       </div>
+
+      {/*Exibir a mensagem formatada*/}
+      {mensagem.texto && (
+        <div className={`alert ${mensagem.tipo}`}>
+          {mensagem.texto}
+          <button onClick={removerMensagem} className="botao-ok">OK</button>
+        </div>
+      )}
 
       <div className="controle-colaborador">
         <input
