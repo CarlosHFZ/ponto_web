@@ -318,7 +318,7 @@ h2 {
 .registros {
   display: flex;
   gap: 8px;
-  justify-content: flex-start; /* Alinha os registros à esquerda */
+  justify-content: center;/* Alinha os registros no centro */
   flex-wrap: wrap; /* Permite quebrar linha se necessário */
   margin-top: 10px;
 }
@@ -434,6 +434,40 @@ h2 {
   height: 100vh;
 }
 
+ /* Formatação das mensagens */
+.alert {
+  padding: 10px;
+  border-radius: px;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  position: relative; 
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  width: 300px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.alert.success {
+  background-color: #06b161; /* Cor verde para sucesso */
+  color: white;
+}
 
+.alert.error {
+  background-color: #dc3545; /* Cor vermelha para erro */
+  color: white;
+}
 
+/*Formatação do botão OK*/
+.botao-ok {
+  margin-top: 10px; 
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}

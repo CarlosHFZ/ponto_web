@@ -6,12 +6,13 @@ const Funcionario = () => {
   const [pontos, setPontos] = useState([]);
   const [nome, setNome] = useState("");
   const [colaboradorNome, setColaboradorNome] = useState("");
+  const [mensagem, setMensagem] = useState({exto:"", tipo: ""});
 
   const colaboradorId = localStorage.getItem("colaboradorId");
 
   useEffect(() => {
     if (!colaboradorId) {
-      alert("Colaborador não encontrado. Faça login novamente.");
+      setMensagem({texto: "Colaborador não encontrado. Faça login novamente.", tipo: "error"});
       return;
     }
 
@@ -21,12 +22,14 @@ const Funcionario = () => {
       .then((response) => {
         setNome(response.data.nome);
       })
-      .catch((error) => console.error("Erro ao obter dados do colaborador:", error));
+      .catch(()=>
+      setMensagem({texto:"Erro ao buscar informações do colaborador.", tipo: "error"})
+    );
   }, [colaboradorId]);
 
   const handleRegistrarPonto = async () => {
     if (!colaboradorId) {
-      alert("Colaborador não encontrado. Faça login novamente.");
+      setMensagem({texto: "Colaborador não encontrado. Faça login novamente.", tipo: "error"});
       return;
     }
 
@@ -44,10 +47,9 @@ const Funcionario = () => {
         return novosPontos;
       });
 
-      alert(response.data.message || "Ponto registrado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao registrar ponto:", error.response?.data || error.message);
-      alert(error.response?.data.error || "Erro ao registrar ponto.");
+      setMensagem({texto: response.data.message || "Ponto registrado com sucesso!", tipo: "success"});
+    } catch {
+      setMensagem({texto:"Erro ao registrar ponto.", tipo: "error"});
     }
   };
 
@@ -66,19 +68,33 @@ const Funcionario = () => {
         setColaboradorNome(response.data.nome); // Atualiza o estado com o nome
       } catch (error) {
         console.error("Erro ao buscar colaborador:", error);
-        alert("Erro ao conectar com o servidor.");
+        setMensagem("Erro ao conectar com o servidor.");
       }
     };
 
     mostrarColaborador();
   }, []); // Executa apenas quando o componente é montado
 
+
+    // Função para remover a mensagem
+    const removerMensagem = () => {
+      setMensagem({ texto: "", tipo: "" });
+    };
+    
   return (
     <div>
       <h1>Bem-vindo, {colaboradorNome || "Carregando..."}</h1>
 
       {/* Relógio com a hora atual */}
       <Relogio />
+      
+      {/*Exibir a mensagem formatada*/}
+      {mensagem.texto && (
+        <div className={`alert ${mensagem.tipo}`}>
+          {mensagem.texto}
+          <button onClick={removerMensagem} className="botao-ok">OK</button>
+        </div>
+      )}
 
       <button onClick={handleRegistrarPonto}>Registrar Ponto</button>
 
