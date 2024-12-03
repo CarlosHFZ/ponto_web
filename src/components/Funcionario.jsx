@@ -6,13 +6,13 @@ const Funcionario = () => {
   const [pontos, setPontos] = useState([]);
   const [nome, setNome] = useState("");
   const [colaboradorNome, setColaboradorNome] = useState("");
-  const [mensagem, setMensagem] = useState({exto:"", tipo: ""});
+  const [mensagem, setMensagem] = useState({ texto: "", tipo: "" });
 
   const colaboradorId = localStorage.getItem("colaboradorId");
 
   useEffect(() => {
     if (!colaboradorId) {
-      setMensagem({texto: "Colaborador não encontrado. Faça login novamente.", tipo: "error"});
+      setMensagem({ texto: "Colaborador não encontrado. Faça login novamente.", tipo: "error" });
       return;
     }
 
@@ -22,39 +22,44 @@ const Funcionario = () => {
       .then((response) => {
         setNome(response.data.nome);
       })
-      .catch(()=>
-      setMensagem({texto:"Erro ao buscar informações do colaborador.", tipo: "error"})
-    );
+      .catch(() =>
+        setMensagem({ texto: "Erro ao buscar informações do colaborador.", tipo: "error" })
+      );
   }, [colaboradorId]);
 
   const handleRegistrarPonto = async () => {
     if (!colaboradorId) {
-      setMensagem({texto: "Colaborador não encontrado. Faça login novamente.", tipo: "error"});
+      setMensagem({ texto: "Colaborador não encontrado. Faça login novamente.", tipo: "error" });
       return;
     }
-
+  
     try {
       const response = await axios.post("http://127.0.0.1:5000/registrar_ponto", {
         colaborador_id: colaboradorId,
       });
-
-      // Verifica se o colaborador já tem 4 registros e remove o mais antigo, se necessário
+  
+      // Adiciona o novo ponto ao topo da lista e garante que a lista não ultrapasse 4 pontos
       setPontos((prevPontos) => {
-        const novosPontos = [...prevPontos, response.data.horario];
+        const novosPontos = [response.data.horario, ...prevPontos]; // Adiciona o novo ponto no início
         if (novosPontos.length > 4) {
-          novosPontos.shift(); // Remove o primeiro ponto, mantendo apenas 4
+          novosPontos.pop(); // Remove o último ponto para garantir que só há 4
         }
         return novosPontos;
       });
-
-      setMensagem({texto: response.data.message || "Ponto registrado com sucesso!", tipo: "success"});
+  
+      setMensagem({ texto: response.data.message || "Ponto registrado com sucesso!", tipo: "success" });
+  
+      // Chama novamente a função para buscar os registros mais atualizados
+      buscarRegistrosPorColaborador(colaboradorId)
+        .then((dados) => setPontos(dados)) // Atualiza os pontos com a resposta mais recente
+        .catch((err) => console.error("Erro ao buscar registros:", err));
+  
     } catch {
-      setMensagem({texto:"Erro ao registrar ponto.", tipo: "error"});
+      setMensagem({ texto: "Erro ao registrar ponto.", tipo: "error" });
     }
   };
 
   useEffect(() => {
-    // Função para buscar o colaborador
     const mostrarColaborador = async () => {
       const colaboradorId = localStorage.getItem("colaboradorId");
 
@@ -75,24 +80,40 @@ const Funcionario = () => {
     mostrarColaborador();
   }, []); // Executa apenas quando o componente é montado
 
+  const buscarRegistrosPorColaborador = async (colaboradorId, data = '') => {
+    try {
+      const dataFormatada = data ? new Date(data).toISOString().split('T')[0] : '';
+      const response = await axios.get(`http://127.0.0.1:5000/registros/${colaboradorId}`, {
+        params: { data: dataFormatada },
+      });
+      return response.data;
+    } catch (err) {
+      console.error(`Erro ao buscar registros para colaborador ${colaboradorId}:`, err);
+      return [];
+    }
+  };
 
-    // Função para remover a mensagem
-    const removerMensagem = () => {
-      setMensagem({ texto: "", tipo: "" });
-    };
+  useEffect(() => {
+    const dataAtual = new Date();
+    const dataFormatada = dataAtual.toISOString().split('T')[0];
     
+    buscarRegistrosPorColaborador(colaboradorId, dataFormatada)
+      .then((dados) => setPontos(dados))
+      .catch((err) => console.error("Erro ao buscar registros:", err));
+  }, [colaboradorId]);
+
   return (
-    <div>
+    <div className="janela_funcionario">
       <h1>Bem-vindo, {colaboradorNome || "Carregando..."}</h1>
 
       {/* Relógio com a hora atual */}
       <Relogio />
       
-      {/*Exibir a mensagem formatada*/}
+      {/* Exibir a mensagem formatada */}
       {mensagem.texto && (
         <div className={`alert ${mensagem.tipo}`}>
           {mensagem.texto}
-          <button onClick={removerMensagem} className="botao-ok">OK</button>
+          <button onClick={() => setMensagem({ texto: '', tipo: '' })} className="botao-ok">OK</button>
         </div>
       )}
 
@@ -103,7 +124,7 @@ const Funcionario = () => {
         {pontos.length > 0 ? (
           pontos.map((ponto, index) => (
             <span key={index} className="hora-registro">
-              {ponto}
+              {ponto.hora} {/* Renderiza o valor da propriedade "hora" */}
             </span>
           ))
         ) : (
