@@ -10,7 +10,7 @@
 /* Corpo da página */
 body {
   font-family: 'Arial', sans-serif;
-  background-image: url('/pixelcut-export.jpeg'); /* Caminho da sua imagem */
+
   background-size: cover; /* Faz a imagem cobrir toda a área */
   background-position: center; /* Centraliza a imagem */
   background-repeat: no-repeat; /* Evita que a imagem se repita */
@@ -21,12 +21,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;  /* Centraliza o conteúdo vertical e horizontalmente */
-  min-height: 100vh;
+  min-height: 100vh;  /* Garante que o corpo ocupe toda a altura da janela */
   padding: 0;
   margin: 0;
   width: 100vw;
   height: 100vh;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Evita o scroll horizontal */
 }
 
 /* Container principal */
@@ -48,19 +48,23 @@ div {
   margin-bottom: 20px; /* Espaçamento inferior (opcional) */
 }
 
+
 .controle-colaborador input {
-  flex: auto; /* Faz o input ocupar o máximo de espaço disponível */
-  margin-bottom: 15px;
+  flex: 1; /* Garante que o input ocupe o máximo de espaço disponível */
 }
 
 .controle-colaborador button {
   padding: 15px 15px; /* Ajuste o padding do botão conforme necessário */
+  width: auto; /* Certifique-se que o botão tem tamanho apropriado */
 }
 
-.div_topo Relogio {
-  size: 20px;
+.relogio {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #dc3545;
+  text-align: center;
+  margin-top: 15px;
 }
-
 
 
 /* Títulos */
@@ -126,29 +130,13 @@ button {
   margin-right: 60px;
 }
 
-.botao-remover {
-  margin-left: 200px;
-  margin-right: 200px;
-}
-
-.botao-mostrar {
-  margin-left: 200px;
-  margin-right: 200px;
-}
 
 button:hover {
   background-color: #0056b3;
 }
 
 /* Estilo para os registros */
-.registros {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  padding: 10px;
-}
+
 
 /* Hora do registro */
 .hora-registro {
@@ -241,12 +229,29 @@ button[type="button"]:hover, button[type="submit"]:hover {
   background-color: #dc3545;
   color: white;
   border: none;
-  padding: 15px;
+  padding: 10px;
   border-radius: 5px;
-  font-size: 13px;
+  font-size: 9px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-right: 30px;
+  margin-right: 3px;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+.botao-alterar {
+  margin-left: auto; /* Faz o botão de remoção ficar alinhado à direita */
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 9px;
+  cursor: pointer;
+  transition: red 0.3s;
+  margin-right: 3px;
+  margin-left: 10px;
+  white-space: nowrap;
 }
 
 .botao-remover:hover {
@@ -259,9 +264,6 @@ h2 {
   margin-inline: 10px;
 }
 
-.registros {
-  padding: 1px;
-}
 
 /* Estilo para os pontos registrados dos funcionários */
 .registros {
@@ -316,19 +318,13 @@ h2 {
 /* Estilo para cada linha do colaborador */
 .colaborador-linha {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: flex-start;
+  width: 100%;  /* Garante que o container ocupe toda a largura disponível */
+  flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha, se necessário */
 }
 
 /* Estilo para registros */
-.registros {
-  display: flex;
-  gap: 8px;
-  justify-content: center;/* Alinha os registros no centro */
-  flex-wrap: wrap; /* Permite quebrar linha se necessário */
-  margin-top: 10px;
-}
 
 .sem-registro {
   font-size: 0.9rem;
@@ -350,10 +346,15 @@ h2 {
   background-color: #0056b3;
 }
 
-.colaborador_nome{
+.colaborador_nome {
   margin-top: 20px;
   margin-left: 10px;
   font-size: 20px;
+  white-space: nowrap;  /* Impede a quebra de linha no nome */
+  flex-grow: 1;  /* O nome ocupará o espaço restante disponível */
+  flex-shrink: 0;  /* Evita que o nome encolha */
+  max-width: calc(100% - 200px); /* Limita o tamanho do nome, considerando o espaço para os botões */
+  text-align: left;  /* Garante que o texto fique alinhado à esquerda */
 }
 
 
@@ -482,4 +483,19 @@ h2 {
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.container {
+  background: #fff;
+  padding: 5px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
+}
+
+.janela_funcionario{
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
 }

@@ -11,6 +11,8 @@ const Colaboradores = () => {
   const [mensagemLimite, setMensagemLimite] = useState("");
   const [filtroAplicado, setFiltroAplicado] = useState(false);  // Estado para verificar se o filtro foi aplicado
   const [mensagem, setMensagem] = useState({exto:"", tipo: ""});
+  const [registroParaAtualizar, setRegistroParaAtualizar] = useState(null);
+  const [novoRegistro, setNovoRegistro] = useState("");
 
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const Colaboradores = () => {
     axios.post("http://127.0.0.1:5000/colaboradores", { nome })
       .then((response) => {
           setColaboradores([...colaboradores, { id: Date.now(), nome }]);
-          setMensagem({texto: response.data.message || "Colaborador adicionado com sucesso!", tipo: "success"});
+          setMensagem({texto: "Colaborador adicionado com sucesso!", tipo: "success"});
           setNome("");
       })
       .catch(() =>
@@ -58,11 +60,36 @@ const Colaboradores = () => {
       .then(response => {
 
         setColaboradores(colaboradores.filter(colab => colab.id !== id));
-        setMensagem({texto: response.data.message || "Colaborador removido com sucesso!", tipo: "success"})
+        setMensagem({texto: "Colaborador removido com sucesso!", tipo: "success"})
       })
       .catch(() => 
-        setMensagem({texto: "Erro ao remover colaborador.", tipo: "error"})
+        setMensagem({texto: "Favor atualizar a pagina para remover o colaborador", tipo: "error"})
     );
+  };
+
+  const atualizarNomeColaborador = (id, novoNome) => {
+    axios.put(`http://127.0.0.1:5000/colaboradores/${id}`, { nome: novoNome })
+      .then(response => {
+        alert(response.data.message);
+        setColaboradores(prevColaboradores => 
+          prevColaboradores.map(colab => 
+            colab.id === id ? { ...colab, nome: novoNome } : colab
+          )
+        );
+      })
+      .catch(error => {
+        console.error("Erro ao atualizar nome do colaborador:", error);
+        alert("Erro ao atualizar nome do colaborador. Tente novamente.");
+      });
+  };
+
+  const handleAtualizarNome = (id) => {
+    const novoNome = prompt("Digite o novo nome do colaborador:");
+    if (novoNome) {
+      atualizarNomeColaborador(id, novoNome);
+    } else {
+      alert("O nome não pode ser vazio!");
+    }
   };
 
   // Buscar registros para um colaborador específico (com data opcional)
@@ -103,10 +130,45 @@ const Colaboradores = () => {
     setMensagem({ texto: "", tipo: "" });
   };
 
+
+  const atualizarRegistro = (colaboradorId, data, novoRegistro) => {
+    axios.put(`http://127.0.0.1:5000/registros/${colaboradorId}`, {
+        data: data,           // Data do registro (formato: YYYY-MM-DD)
+        registro: novoRegistro // Novo horário do registro (formato: HH:MM:SS)
+      })
+      .then(response => {
+        // Exibe a mensagem de sucesso retornada pelo backend
+        alert(response.data.message);
+  
+        // Atualiza a interface ou recarrega os registros, se necessário
+        buscarRegistrosPorColaborador(colaboradorId); // Função já existente no seu frontend
+      })
+      .catch(error => {
+        console.error("Erro ao atualizar registro:", error);
+        alert("Erro ao atualizar o registro. Tente novamente.");
+      });
+  };
+
+  const handleEditarRegistro = (registro) => {
+    setRegistroParaAtualizar(registro);
+    setNovoRegistro(registro.hora); // Preenche o campo com o horário atual
+  };
+  
+  const handleSalvarRegistro = (colabId) => {
+    if (registroParaAtualizar && novoRegistro) {
+      atualizarRegistro(colabId, registroParaAtualizar.data, novoRegistro); // Passa colabId ao invés de colaboradorId
+      setRegistroParaAtualizar(null); // Limpa a área de edição
+      setNovoRegistro(""); // Limpa o campo
+    } else {
+      alert("Por favor, preencha um novo horário.");
+    }
+  };
+  
+
   return (
-    <div>
-      <div className="div_topo">
-        <h1>Painel Colaboradores</h1>
+    <div class="container">
+      <h1>Painel Colaboradores</h1>
+      <div class="relogio">
         <Relogio className="Relogio" />
       </div>
 
@@ -151,8 +213,27 @@ const Colaboradores = () => {
                 >
                   Remover Colaborador
                 </button>
+                <button
+                  onClick={() => handleAtualizarNome(colab.id)}
+                  className="botao-alterar"
+                >
+                  Alterar Nome
+                </button>
               </div>
 
+              {registroParaAtualizar && (
+                <div className="editar-registro">
+                  <input
+                    type="time"
+                    value={novoRegistro}
+                    onChange={(e) => setNovoRegistro(e.target.value)}
+                  />
+                  <button onClick={handleSalvarRegistro}>Salvar</button>
+                  <button onClick={() => setRegistroParaAtualizar(null)}>Cancelar</button>
+                </div>
+              )}
+
+              {/* Exibir os registros diretamente */}
               {/* Exibir os registros diretamente */}
               <div className="registros">
                 {registrosPorColaborador[colab.id]?.length > 0 ? (
