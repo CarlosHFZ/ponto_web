@@ -57,6 +57,31 @@ const Colaboradores = () => {
       .catch(error => console.error("Erro ao remover colaborador:", error));
   };
 
+  const atualizarNomeColaborador = (id, novoNome) => {
+    axios.put(`http://127.0.0.1:5000/colaboradores/${id}`, { nome: novoNome })
+      .then(response => {
+        alert(response.data.message);
+        setColaboradores(prevColaboradores => 
+          prevColaboradores.map(colab => 
+            colab.id === id ? { ...colab, nome: novoNome } : colab
+          )
+        );
+      })
+      .catch(error => {
+        console.error("Erro ao atualizar nome do colaborador:", error);
+        alert("Erro ao atualizar nome do colaborador. Tente novamente.");
+      });
+  };
+
+  const handleAtualizarNome = (id) => {
+    const novoNome = prompt("Digite o novo nome do colaborador:");
+    if (novoNome) {
+      atualizarNomeColaborador(id, novoNome);
+    } else {
+      alert("O nome não pode ser vazio!");
+    }
+  };
+
   // Buscar registros para um colaborador específico (com data opcional)
   const buscarRegistrosPorColaborador = async (colaboradorId, data = '') => {
     try {
@@ -129,6 +154,11 @@ const Colaboradores = () => {
                   className="botao-remover"
                 >
                   Remover Colaborador
+                </button>
+                <button
+                  onClick={() => handleAtualizarNome(colab.id)}
+                >
+                  Alterar nome
                 </button>
               </div>
 
