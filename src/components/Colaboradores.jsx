@@ -11,8 +11,9 @@ const Colaboradores = () => {
   const [mensagemLimite, setMensagemLimite] = useState("");
   const [filtroAplicado, setFiltroAplicado] = useState(false);  // Estado para verificar se o filtro foi aplicado
   const [mensagem, setMensagem] = useState({exto:"", tipo: ""});
-  const [registroParaAtualizar, setRegistroParaAtualizar] = useState(null);
-  const [novoRegistro, setNovoRegistro] = useState("");
+  const [registroSelecionado, setRegistroSelecionado] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  
 
 
   useEffect(() => {
@@ -95,16 +96,12 @@ const Colaboradores = () => {
   // Buscar registros para um colaborador específico (com data opcional)
   const buscarRegistrosPorColaborador = async (colaboradorId, data = '') => {
     try {
-      // Se a data não for fornecida, formate a data atual como uma string no formato 'YYYY-MM-DD'
       const dataFormatada = data ? new Date(data).toISOString().split('T')[0] : '';
-  
-      console.log(`Buscando registros para o colaborador ${colaboradorId} com data ${dataFormatada}`); // Verifica a data formatada
-  
-      // Envia a data formatada na query string
+      console.log(`Buscando registros para o colaborador ${colaboradorId} com data ${dataFormatada}`);
       const response = await axios.get(`http://127.0.0.1:5000/registros/${colaboradorId}`, {
         params: { data: dataFormatada }
       });
-  
+      console.log("Resposta de registros:", response.data);
       setRegistrosPorColaborador((prev) => ({
         ...prev,
         [colaboradorId]: response.data,
@@ -131,40 +128,84 @@ const Colaboradores = () => {
   };
 
 
-  const atualizarRegistro = (colaboradorId, data, novoRegistro) => {
-    axios.put(`http://127.0.0.1:5000/registros/${colaboradorId}`, {
-        data: data,           // Data do registro (formato: YYYY-MM-DD)
-        registro: novoRegistro // Novo horário do registro (formato: HH:MM:SS)
+  const editarRegistroPorHorario = (horarioAtual, novoHorario, data) => {
+    console.log("Hora atual: ", horarioAtual);
+    console.log("Novo horário: ", novoHorario);
+    console.log("Data: ", data); // Verifique a data que está sendo passada
+
+    // Verificar o formato da data para garantir que está no formato correto
+    const dataFormatada = new Date(data);
+    if (isNaN(dataFormatada)) {
+        alert("Formato de data inválido. Use o formato YYYY-MM-DD.");
+        return;
+    }
+    const dataString = dataFormatada.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
+    axios
+      .put(`http://127.0.0.1:5000/registros/${horarioAtual}`, {
+        registro: novoHorario,
+        data: dataString,  // Enviando a data formatada
       })
-      .then(response => {
-        // Exibe a mensagem de sucesso retornada pelo backend
+      .then((response) => {
         alert(response.data.message);
-  
-        // Atualiza a interface ou recarrega os registros, se necessário
-        buscarRegistrosPorColaborador(colaboradorId); // Função já existente no seu frontend
+        setRegistrosPorColaborador((prev) => {
+          const updatedRegistros = { ...prev };
+          for (let colabId in updatedRegistros) {
+            const registros = updatedRegistros[colabId];
+            const index = registros.findIndex(
+              (registro) => registro.hora === horarioAtual
+            );
+            if (index !== -1) {
+              registros[index] = { ...registros[index], hora: novoHorario }; // Atualizando a hora
+              break;
+            }
+          }
+          return updatedRegistros;
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Erro ao atualizar registro:", error);
-        alert("Erro ao atualizar o registro. Tente novamente.");
+        alert("Erro ao atualizar o registro.");
       });
   };
 
-  const handleEditarRegistro = (registro) => {
-    setRegistroParaAtualizar(registro);
-    setNovoRegistro(registro.hora); // Preenche o campo com o horário atual
+  
+
+  const abrirModal = (registro, colaboradorId) => {
+    setRegistroSelecionado({
+      ...registro,
+      colaboradorId,
+      horarioAtual: registro.hora, // Armazena o horário original
+    });
+    setMostrarModal(true);
   };
   
-  const handleSalvarRegistro = (colabId) => {
-    if (registroParaAtualizar && novoRegistro) {
-      atualizarRegistro(colabId, registroParaAtualizar.data, novoRegistro); // Passa colabId ao invés de colaboradorId
-      setRegistroParaAtualizar(null); // Limpa a área de edição
-      setNovoRegistro(""); // Limpa o campo
-    } else {
-      alert("Por favor, preencha um novo horário.");
+  const excluirRegistroPorHorario = (horarioAtual) => {
+    if (window.confirm("Tem certeza que deseja excluir este registro?")) {
+      axios
+        .delete(`http://127.0.0.1:5000/registros/${horarioAtual}`)
+        .then((response) => {
+          alert(response.data.message);
+          setRegistrosPorColaborador((prev) => {
+            const updatedRegistros = { ...prev };
+            for (let colabId in updatedRegistros) {
+              updatedRegistros[colabId] = updatedRegistros[colabId].filter(
+                (registro) => registro.hora !== horarioAtual
+              );
+            }
+            return updatedRegistros;
+          });
+        })
+        .catch((error) => {
+          console.error("Erro ao excluir registro:", error);
+          alert("Erro ao excluir o registro.");
+        });
     }
   };
   
 
+  
+  
   return (
     <div class="container">
       <h1>Painel Colaboradores</h1>
@@ -221,31 +262,66 @@ const Colaboradores = () => {
                 </button>
               </div>
 
-              {registroParaAtualizar && (
-                <div className="editar-registro">
-                  <input
-                    type="time"
-                    value={novoRegistro}
-                    onChange={(e) => setNovoRegistro(e.target.value)}
-                  />
-                  <button onClick={handleSalvarRegistro}>Salvar</button>
-                  <button onClick={() => setRegistroParaAtualizar(null)}>Cancelar</button>
+              {mostrarModal && (
+                <div className="modal">
+                  <div className="modal-conteudo">
+                    <h3>Editar Registro</h3>
+                    <input
+                      type="time"
+                      value={registroSelecionado.hora || ""}
+                      onChange={(e) =>
+                        setRegistroSelecionado((prev) => ({
+                          ...prev,
+                          hora: e.target.value,
+                        }))
+                      }
+                    />
+                    <div className="botoes-modal">
+                    <button
+                      onClick={() => {
+                        editarRegistroPorHorario(
+                          registroSelecionado.horarioAtual, // Horário original
+                          registroSelecionado.hora,        // Novo horário
+                          dataFiltro         // Data
+                        );
+                        setMostrarModal(false);
+                      }}
+                    >
+                      Salvar
+                    </button>
+                      <button onClick={() => setMostrarModal(false)}>Cancelar</button>
+                      <button
+                        onClick={() => {
+                          excluirRegistroPorHorario(registroSelecionado.hora); // Passa o horário para excluir
+                          setMostrarModal(false);
+                        }}
+                      >
+                        Apagar
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              )}
+                
+                )}
 
-              {/* Exibir os registros diretamente */}
+              
               {/* Exibir os registros diretamente */}
               <div className="registros">
-                {registrosPorColaborador[colab.id]?.length > 0 ? (
-                  registrosPorColaborador[colab.id].map((registro, index) => (
-                    <span key={index} className="hora-registro">
-                      {registro.hora}
-                    </span>
-                  ))
-                ) : (
-                  <span className="sem-registro">Sem registro</span>
-                )}
+              {registrosPorColaborador[colab.id]?.length > 0 ? (
+                registrosPorColaborador[colab.id].map((registro) => (
+                  <span
+                    onClick={() => abrirModal(registro, colab.id)}
+                    key={registro.id}  // Use o ID do registro como chave
+                    className="hora-registro"
+                  >
+                    {registro.hora}
+                  </span>
+                ))
+              ) : (
+                <span className="sem-registro">Sem registro</span>
+              )}
               </div>
+
             </li>
           ))}
         </ul>
