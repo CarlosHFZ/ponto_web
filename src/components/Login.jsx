@@ -36,6 +36,12 @@ const Login = () => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login-page">
       <div className="div_ponto login-container">
@@ -47,12 +53,14 @@ const Login = () => {
             placeholder="Nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <input
             type="password"
             placeholder="Senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <button onClick={handleLogin} type="button">
             Entrar
