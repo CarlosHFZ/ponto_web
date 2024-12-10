@@ -1,17 +1,29 @@
 
-### Para rodar o web
+### Instruções para Rodar o Projeto Web
+    Este guia explica como configurar e rodar o projeto web em sua máquina local.
 
-baixar node.js: https://nodejs.org/en
-colocar na path das variaveis de sistema
 
-No terminal digite: 
+### Pré-requisitos
+    Node.js: Certifique-se de ter o Node.js instalado em sua máquina.
+    Caso não esteja baixe através desse link: https://nodejs.org/en
 
-npm install react-scripts
-------------------------------
-npm start
+    Após a instalação, adicione o Node.js à Path das variáveis de ambiente do sistema (caso necessário).
 
-se não abrir o site quando rotar o start na barra de pesquisa do navegador e cole:
-http://localhost:3000
 
-e de enter
+### Configuração do Ambiente
+    1 - Abra o terminal no diretório do projeto.
+    2 - Instale as dependências necessárias executando o comando:
+         npm install react-scripts
 
+
+### Iniciando o Projeto
+    1- No terminal, execute:
+        npm start
+    2 - Após executar o comando, o projeto deve abrir automaticamente no seu navegador padrão.
+
+
+### Caso o Site Não Abra Automaticamente
+    Abra seu navegador manualmente.
+    Na barra de endereços, cole o seguinte link:
+        http://localhost:3000
+    Pressione Enter.
